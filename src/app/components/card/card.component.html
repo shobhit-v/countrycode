@@ -1,0 +1,18 @@
+<div class="card w-25 d-inline align-items-stretch m-4" style="float:left; height: 500px;">
+  <img class="card-img-top" src={{country.flag}} alt="Card image" style="width:100%">
+  <div class="card-body">
+    <h4 class="card-title">{{country.countryName}}</h4>
+    <hr />
+    <h6>Neighbor Countries</h6>
+    <p class="card-text">
+      {{country.neighborCountries}}
+    </p>
+    <hr />
+    <h6>Languages Spoken</h6>
+    <p class="card-text">
+      <span *ngFor="let language of country.languagesSpoken; let first = first; let last = last;">
+        {{language.nativeName}}{{last == 0?",":"."}}
+      </span>
+    </p>
+  </div>
+</div>

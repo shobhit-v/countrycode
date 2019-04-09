@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CountrybycodeService } from 'src/app/services/countrybycode.service';
 
 @Component({
   selector: 'app-form',
@@ -9,7 +10,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class FormComponent implements OnInit {
 
   countryCodeForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  showData = false;
+  
+  @ViewChild('showbtn') showbtn: ElementRef;
+
+  countries = [];
+  constructor(
+    private fb: FormBuilder,
+    private countrybycodeService: CountrybycodeService
+  ) {
   }
 
   ngOnInit() {
@@ -22,12 +31,34 @@ export class FormComponent implements OnInit {
     });
   }
 
+  showCountry() {
+    this.showData = true;
+    const code = this.countryCodeForm.get('code').value;
+    this.countrybycodeService.getCountryDetails(code).subscribe(
+      (res: any) => {
+        const format = {
+          'countryName': res.name,
+          'neighborCountries': res.borders,
+          'languagesSpoken': res.languages,
+          'flag': res.flag
+        };
+        this.countries.push(format);
+        console.log(format);
+      }
+    );
+  }
+
+  triggerFalseClick() {
+    const el: HTMLElement = this.showbtn.nativeElement as HTMLElement;
+    el.click();
+  }
+
   getDynamicErrors(controlName) {
     const control = this.countryCodeForm.get(controlName);
     if (control.hasError('required')) {
       return 'This Field is required';
     } else if (control.hasError('pattern')) {
-      return 'Invalid Value';
+      return 'Invalid Value! Exactly Three letter country code';
     }
   }
 }

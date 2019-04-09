@@ -1,19 +1,35 @@
-<div class="modal-body">
-  <form [formGroup]="countryCodeForm">
+<div class="">
+  <form [formGroup]="countryCodeForm" (submit)="triggerFalseClick()">
     <div class="form-group">
       <label for="code">Country Code</label>
-      <input id='code' type="text" class="form-control" name="code" pattern="[A-Za-z]{3}"
-        title="Three letter country code" placeholder="Please Three Character Country Code to Get Details"
-        formControlName="code" maxlength="3">
-      <div *ngIf="countryCodeForm.get('code').touched &&countryCodeForm.get('code').invalid" class="alert alert-warning"
+      <input 
+        id='code' 
+        type="text"  
+        name="code" 
+        pattern="[A-Za-z]{3}"
+        title="Three letter country code" 
+        placeholder="Please Three Character Country Code to Get Details"
+        formControlName="code" 
+        maxlength="3"
+        #input (input)="input.value=$event.target.value.toUpperCase()"
+        [ngClass]="{'form-control':true,'is-valid': countryCodeForm.get('code').invalid == 0}"
+        >
+      <div *ngIf="countryCodeForm.get('code').touched && countryCodeForm.get('code').invalid" class="alert alert-warning"
         role="alert">
-        {{ getDynamicErrors('code') }}!
-        <strong>Exactly Three letter country code</strong>
+        {{ getDynamicErrors('code') }}!        
       </div>
     </div>
     <div class="form-group text-center">
-      <button [disabled]="!countryCodeForm.valid" type="button" class="btn btn-success" (click)="addCountry()">Show
+      <button #showbtn [disabled]="!countryCodeForm.valid" type="button" class="btn btn-success"
+        (click)="showCountry()">Show
         Country</button>
     </div>
   </form>
 </div>
+
+<div class="container pl-0 pr-0" *ngIf="showData; else elsePart">
+  <app-card *ngFor="let country of countries" [country]="country"></app-card>
+</div>
+<ng-template #elsePart>
+  <h1>No Country Searched yet :(</h1>
+</ng-template>
