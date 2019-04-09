@@ -5,7 +5,7 @@
       <input id='code' type="text" name="code" pattern="[A-Za-z]{3}" title="Three letter country code"
         placeholder="Please Three Character Country Code to Get Details" formControlName="code" maxlength="3" #input
         (input)="input.value=$event.target.value.toUpperCase()"
-        [ngClass]="{'form-control':true,'is-valid': countryCodeForm.get('code').invalid == 0}" (input)="resetWrongErr()"
+        (input)="resetWrongErr()"
         [ngbTypeahead]="search">
       <div *ngIf="countryCodeForm.get('code').touched && countryCodeForm.get('code').invalid"
         class="alert alert-warning" role="alert">
