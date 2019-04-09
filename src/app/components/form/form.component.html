@@ -2,28 +2,20 @@
   <form [formGroup]="countryCodeForm" (submit)="triggerFalseClick()">
     <div class="form-group">
       <label for="code">Country Code</label>
-      <input 
-        id='code' 
-        type="text"  
-        name="code" 
-        pattern="[A-Za-z]{3}"
-        title="Three letter country code" 
-        placeholder="Please Three Character Country Code to Get Details"
-        formControlName="code" 
-        maxlength="3"
-        #input (input)="input.value=$event.target.value.toUpperCase()"
-        [ngClass]="{'form-control':true,'is-valid': countryCodeForm.get('code').invalid == 0}"
-        (input)="resetWrongErr()"
-        >
-      <div *ngIf="countryCodeForm.get('code').touched && countryCodeForm.get('code').invalid" class="alert alert-warning"
-        role="alert">
-        {{ getDynamicErrors('code') }}!        
+      <input id='code' type="text" name="code" pattern="[A-Za-z]{3}" title="Three letter country code"
+        placeholder="Please Three Character Country Code to Get Details" formControlName="code" maxlength="3" #input
+        (input)="input.value=$event.target.value.toUpperCase()"
+        [ngClass]="{'form-control':true,'is-valid': countryCodeForm.get('code').invalid == 0}" (input)="resetWrongErr()"
+        [ngbTypeahead]="search">
+      <div *ngIf="countryCodeForm.get('code').touched && countryCodeForm.get('code').invalid"
+        class="alert alert-warning" role="alert">
+        {{ getDynamicErrors('code') }}!
       </div>
       <div *ngIf="incorrectCode" class="alert alert-warning" role="alert">
-          Incorrect Country Code!
+        Incorrect Country Code!
       </div>
       <div *ngIf="countryAlreadyfetched" class="alert alert-warning" role="alert">
-          Country Already fetched!
+        Country Already fetched!
       </div>
     </div>
     <div class="form-group text-center">
@@ -34,7 +26,7 @@
   </form>
 </div>
 
-<div class="container pl-0 pr-0" *ngIf="showData; else elsePart">  
+<div class="container pl-0 pr-0" *ngIf="showData; else elsePart">
   <app-card *ngFor="let country of countries.reverse()" [country]="country"></app-card>
 </div>
 <ng-template #elsePart>

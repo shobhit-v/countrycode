@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CountrybycodeService } from 'src/app/services/countrybycode.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form',
@@ -16,6 +18,10 @@ export class FormComponent implements OnInit {
   @ViewChild('showbtn') showbtn: ElementRef;
 
   countries = [];
+  allCounyries = [];
+
+  search;
+
   constructor(
     private fb: FormBuilder,
     private countrybycodeService: CountrybycodeService
@@ -23,6 +29,16 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.countrybycodeService.getCountryCode().subscribe(
+      (res: any) => res.map(val => this.allCounyries.push(val.alpha3Code))
+    );
+    this.search = (text: Observable<string>) =>
+      text.pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(term => term.length < 1 ? []
+          : this.allCounyries.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      )
     this.createForms();
   }
 

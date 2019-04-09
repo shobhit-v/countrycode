@@ -16,4 +16,7 @@ export class CountrybycodeService {
     };
     return this.http.get(`https://restcountries.eu/rest/v2/alpha/${code}`, header);
   }
+  getCountryCode() {
+    return this.http.get('https://restcountries.eu/rest/v2/all?fields=alpha3Code');
+  }
 }

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { FormComponent } from './components/form/form.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { CardComponent } from './components/card/card.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { CardComponent } from './components/card/card.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-
+    NgbModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
