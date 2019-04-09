@@ -22,6 +22,9 @@
       <div *ngIf="incorrectCode" class="alert alert-warning" role="alert">
           Incorrect Country Code!
       </div>
+      <div *ngIf="countryAlreadyfetched" class="alert alert-warning" role="alert">
+          Country Already fetched!
+      </div>
     </div>
     <div class="form-group text-center">
       <button #showbtn [disabled]="!countryCodeForm.valid" type="button" class="btn btn-success"
@@ -35,5 +38,5 @@
   <app-card *ngFor="let country of countries.reverse()" [country]="country"></app-card>
 </div>
 <ng-template #elsePart>
-  <h1>No Country Searched yet :(</h1>
+  <h3>No Country Searched yet :(</h3>
 </ng-template>

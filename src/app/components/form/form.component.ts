@@ -11,6 +11,7 @@ export class FormComponent implements OnInit {
 
   countryCodeForm: FormGroup;
   incorrectCode: Boolean = false;
+  countryAlreadyfetched: Boolean = false;
   showData = false;
   @ViewChild('showbtn') showbtn: ElementRef;
 
@@ -33,13 +34,22 @@ export class FormComponent implements OnInit {
 
   showCountry() {
     const code = this.countryCodeForm.get('code').value;
+    if (this.countries.length > 0) {
+      const status = this.countries.find(elem => elem.alpha3Code.toUpperCase() === code.toUpperCase());
+      console.log(status);
+      if (typeof status !== 'undefined' && status.countryName) {
+        this.countryAlreadyfetched = true;
+        return;
+      }
+    }
     this.countrybycodeService.getCountryDetails(code).subscribe(
       (res: any) => {
         const format = {
           'countryName': res.name,
           'neighborCountries': res.borders,
           'languagesSpoken': res.languages,
-          'flag': res.flag
+          'flag': res.flag,
+          'alpha3Code': res.alpha3Code
         };
         this.countries.push(format);
         this.showData = true;
@@ -71,5 +81,6 @@ export class FormComponent implements OnInit {
 
   resetWrongErr() {
     this.incorrectCode = false;
+    this.countryAlreadyfetched = false;
   }
 }
