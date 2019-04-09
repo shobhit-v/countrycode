@@ -1,27 +1,19 @@
 <div class="modal-body">
-  <form [formGroup]="addCountryForm">
+  <form [formGroup]="countryCodeForm">
     <div class="form-group">
-      <label for="countryControl">Name</label>
-      <select #countryName class="form-control" formControlName="countryControl" (change)="resetwarning()">        
-        <option [ngValue]="country" *ngFor="let country of countries">
-          {{country.name}}
-        </option>
-      </select>
-      <div *ngIf="addCountryForm.get('countryControl').touched && addCountryForm.get('countryControl').invalid"
-        class="alert alert-warning" role="alert">
-        <strong>Warning!</strong> {{ getDynamicErrors('countryControl') }}
-      </div>
-      <div *ngIf="customeError" class="alert alert-danger" role="alert">
-        <strong>Warning!</strong> {{ customeErrorMsg }}
+      <label for="code">Country Code</label>
+      <input id='code' type="text" class="form-control" name="code" pattern="[A-Za-z]{3}"
+        title="Three letter country code" placeholder="Please Three Character Country Code to Get Details"
+        formControlName="code" maxlength="3">
+      <div *ngIf="countryCodeForm.get('code').touched &&countryCodeForm.get('code').invalid" class="alert alert-warning"
+        role="alert">
+        {{ getDynamicErrors('code') }}!
+        <strong>Exactly Three letter country code</strong>
       </div>
     </div>
-    <div class="form-group">
-      <label for="note">Note</label>
-      <textarea #countryNote rows="4" class="form-control" placeholder="Enter any Note (If Any)" formControlName="note"></textarea>
-      <div *ngIf="addCountryForm.get('note').touched && addCountryForm.get('note').invalid" class="alert alert-warning"
-        role="alert">
-        <strong>Warning!</strong> {{ getDynamicErrors('note') }}
-      </div>
+    <div class="form-group text-center">
+      <button [disabled]="!countryCodeForm.valid" type="button" class="btn btn-success" (click)="addCountry()">Show
+        Country</button>
     </div>
   </form>
 </div>

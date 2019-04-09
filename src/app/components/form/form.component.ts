@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
 
-  addCountryForm: FormGroup;
+  countryCodeForm: FormGroup;
   constructor(private fb: FormBuilder) {
   }
 
@@ -17,10 +17,17 @@ export class FormComponent implements OnInit {
   }
 
   createForms() {
-    this.addCountryForm = this.fb.group({
-      countryControl: [],
-      note: ['', [Validators.required]]
+    this.countryCodeForm = this.fb.group({
+      code: ['', [Validators.required]]
     });
   }
 
+  getDynamicErrors(controlName) {
+    const control = this.countryCodeForm.get(controlName);
+    if (control.hasError('required')) {
+      return 'This Field is required';
+    } else if (control.hasError('pattern')) {
+      return 'Invalid Value';
+    }
+  }
 }
