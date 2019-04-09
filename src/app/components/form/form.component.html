@@ -13,10 +13,14 @@
         maxlength="3"
         #input (input)="input.value=$event.target.value.toUpperCase()"
         [ngClass]="{'form-control':true,'is-valid': countryCodeForm.get('code').invalid == 0}"
+        (input)="resetWrongErr()"
         >
       <div *ngIf="countryCodeForm.get('code').touched && countryCodeForm.get('code').invalid" class="alert alert-warning"
         role="alert">
         {{ getDynamicErrors('code') }}!        
+      </div>
+      <div *ngIf="incorrectCode" class="alert alert-warning" role="alert">
+          Incorrect Country Code!
       </div>
     </div>
     <div class="form-group text-center">
@@ -27,8 +31,8 @@
   </form>
 </div>
 
-<div class="container pl-0 pr-0" *ngIf="showData; else elsePart">
-  <app-card *ngFor="let country of countries" [country]="country"></app-card>
+<div class="container pl-0 pr-0" *ngIf="showData; else elsePart">  
+  <app-card *ngFor="let country of countries.reverse()" [country]="country"></app-card>
 </div>
 <ng-template #elsePart>
   <h1>No Country Searched yet :(</h1>

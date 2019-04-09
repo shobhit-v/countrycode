@@ -10,8 +10,8 @@ import { CountrybycodeService } from 'src/app/services/countrybycode.service';
 export class FormComponent implements OnInit {
 
   countryCodeForm: FormGroup;
+  incorrectCode: Boolean = false;
   showData = false;
-  
   @ViewChild('showbtn') showbtn: ElementRef;
 
   countries = [];
@@ -32,7 +32,6 @@ export class FormComponent implements OnInit {
   }
 
   showCountry() {
-    this.showData = true;
     const code = this.countryCodeForm.get('code').value;
     this.countrybycodeService.getCountryDetails(code).subscribe(
       (res: any) => {
@@ -43,7 +42,15 @@ export class FormComponent implements OnInit {
           'flag': res.flag
         };
         this.countries.push(format);
-        console.log(format);
+        this.showData = true;
+        this.countryCodeForm.reset();
+      },
+      (err: any) => {
+        if (!err.ok) {
+          if (err.status === 404) {
+            this.incorrectCode = true;
+          }
+        }
       }
     );
   }
@@ -60,5 +67,9 @@ export class FormComponent implements OnInit {
     } else if (control.hasError('pattern')) {
       return 'Invalid Value! Exactly Three letter country code';
     }
+  }
+
+  resetWrongErr() {
+    this.incorrectCode = false;
   }
 }
