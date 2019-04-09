@@ -28,7 +28,7 @@
 </div>
 
 <div class="container pl-0 pr-0" *ngIf="showData; else elsePart">
-  <app-card *ngFor="let country of countries.reverse()" [country]="country"></app-card>
+  <app-card *ngFor="let country of countries" [country]="country"></app-card>
 </div>
 <ng-template #elsePart>
   <h3>No Country Searched yet :(</h3>
